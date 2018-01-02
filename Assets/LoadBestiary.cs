@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LoadBestiary : MonoBehaviour {
 
-    List<Bestiary> beasts = new List<Bestiary>();
+    GameData gameData;
 	// Use this for initialization
 	void Start () {
         TextAsset bestiary = Resources.Load<TextAsset>("Bestiary");
@@ -19,11 +19,11 @@ public class LoadBestiary : MonoBehaviour {
             b.name = row[2];
             int.TryParse(row[3], out b.level);
 
-            beasts.Add(b);
+            gameData.beasts.Add(b);
 
         }
 
-        foreach(Bestiary b in beasts)
+        foreach(Bestiary b in gameData.beasts)
         {
             Debug.Log(b.name);
         }

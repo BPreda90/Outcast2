@@ -319,9 +319,7 @@ public class Hunter {
         this.Sanity = sanity;
 
         this.MonthlyPay = monthlyPay;
-        this.Fortune = fortune;
-
-      
-
+        this.Fortune = fortune; 
     }
+
 }

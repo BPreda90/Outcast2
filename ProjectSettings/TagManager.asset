@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - BoxSelectUI
   layers:
   - Default
   - TransparentFX
@@ -40,4 +41,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 4002006837
+    locked: 0
+  - name: Portraits
+    uniqueID: 3860721291
     locked: 0

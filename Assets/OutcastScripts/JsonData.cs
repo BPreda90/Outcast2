@@ -17,7 +17,6 @@ public class JsonData : MonoBehaviour
     {
         path = Path.Combine(Application.persistentDataPath, filename);
         Debug.Log(path);
-        GameManager.HunterCreated += HunterRecruited;
     }
 
     // Update is called once per frame
@@ -25,6 +24,7 @@ public class JsonData : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
+
             SaveData();
         }
         if (Input.GetKeyDown(KeyCode.R))
@@ -71,30 +71,6 @@ public class JsonData : MonoBehaviour
         }
     }
 
-
-    public void HunterRecruited(Hunter h)
-    {
-        if (!gameData.hunters.Contains(h))
-        {
-            gameData.hunters.Add(h);
-        }
-        else
-        {
-            Debug.LogError(h.Name + "is already present in the user's persistent hunter list! Something went wrong!");
-        }
-    }
-
-    public void HunterDismissed(Hunter h)
-    {
-        if (gameData.hunters.Contains(h))
-        {
-            gameData.hunters.Remove(h);
-        }
-        else
-        {
-            Debug.LogError(h.Name + " does not exist inside the user's persistent hunter list");
-        }
-    }
 
 
 }

@@ -1,8 +1,9 @@
 ﻿<Properties StartupItem="Outcast 2.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\JsonDemo.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\OutcastScripts\JsonData.cs">
     <Files>
-      <File FileName="Assets\JsonDemo.cs" Line="1" Column="1" />
+      <File FileName="Assets\OutcastScripts\HunterComponent.cs" Line="1" Column="1" />
+      <File FileName="Assets\OutcastScripts\JsonData.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
