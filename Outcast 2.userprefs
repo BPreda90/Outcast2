@@ -1,9 +1,15 @@
 ﻿<Properties StartupItem="Outcast 2.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\OutcastScripts\JsonData.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\OutcastScripts\Main.cs">
     <Files>
       <File FileName="Assets\OutcastScripts\HunterComponent.cs" Line="1" Column="1" />
       <File FileName="Assets\OutcastScripts\JsonData.cs" Line="1" Column="1" />
+      <File FileName="Assets\OutcastScripts\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\OutcastScripts\Main.cs" Line="1" Column="1" />
+      <File FileName="Assets\OutcastScripts\HunterParty.cs" Line="1" Column="1" />
+      <File FileName="Assets\OutcastScripts\Monster.cs" Line="1" Column="1" />
+      <File FileName="Assets\OutcastScripts\Hunter.cs" Line="1" Column="1" />
+      <File FileName="Assets\LoadBestiary.cs" Line="7" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

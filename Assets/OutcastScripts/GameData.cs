@@ -10,8 +10,11 @@ public class GameData
     public string date = "";
     public string time = "";
 
+    public List<Contract> contracts = new List<Contract>();
 
-    public Player _myPlaceholderPlayer;
+    public List<Monster> monsters = new List<Monster>();
+
+    public List<Player> _myPlayer = new List<Player>();
     
     public List<Quests> quest = new List<Quests>();
 

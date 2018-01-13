@@ -10,7 +10,7 @@ public class JsonData : MonoBehaviour
 
     string error = "Unable to retrieve file! The save file might be corrupted or missing!";
 
-    GameData gameData = new GameData();
+    public GameData gameData = new GameData();
 
     // Use this for initialization
     void Start()
@@ -24,7 +24,6 @@ public class JsonData : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-
             SaveData();
         }
         if (Input.GetKeyDown(KeyCode.R))
@@ -34,8 +33,10 @@ public class JsonData : MonoBehaviour
     }
     public void SaveData()
     {
+
         JsonWrapper wrapper = new JsonWrapper();
-        wrapper.gameData = this.gameData;
+        wrapper.gameData = gameData;
+        
 
         string contents = JsonUtility.ToJson(wrapper, true);
         File.WriteAllText(path, contents);
@@ -49,7 +50,7 @@ public class JsonData : MonoBehaviour
                 string contents = File.ReadAllText(path);
                 JsonWrapper wrapper = JsonUtility.FromJson<JsonWrapper>(contents);
                 gameData = wrapper.gameData;
-                Debug.Log(gameData.date + "\n" + gameData.time);
+                
 
                 foreach (Quests q in gameData.quest)
                 {

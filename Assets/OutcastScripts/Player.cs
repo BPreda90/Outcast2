@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 
 
-
+[System.Serializable]
 public class Player
 {
     //Sanity check errors
@@ -82,6 +82,11 @@ public class Player
     [SerializeField]
     protected float _expenses;
 
+    public Player()
+    {
+        
+    }
+
     public Player(string name, float fortune, float income, float expenses)
     {
         Name = name;
@@ -89,5 +94,7 @@ public class Player
         Income = income;
         Expenses = expenses;
     }
+
+    
 }
 
