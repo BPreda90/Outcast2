@@ -5,9 +5,8 @@ using System.Text;
 using UnityEngine;
 
 [System.Serializable]
-public class Monster
+public class Monster: Unit
 {
-    string negativeStatError = "A character with a negative stat is impossible.";
 
     /// <summary>
     /// Describes the monster type. A certain type would have some special characteristics
@@ -26,108 +25,13 @@ public class Monster
         }
         set
         {
-            if (value != Type.Undead || value != Type.Construct || value != Type.PlagueTouched || value != Type.Abberation || value != Type.Human)
-        {
-                throw new Exception("Monsters have to be part of a predefined Type, please either define new the type in the monster class, or use an existing type");
-            }
             _monsterType = value;
         }
     }
     [SerializeField]
     protected Type _monsterType;
-    public string Name
-    {
-        get
-        {
-            return _name;
-        }
-        set
-        {
-            if (value.Length <= 0)
-            {
-                throw new Exception(negativeStatError);
-            }
 
-            _name = value;
-        }
-    }
-    [SerializeField]
-    protected string _name;
 
-    /// <summary>
-    /// This stat describes how effective a monster is combat
-    /// This measures how much damage it applies on each attack
-    /// </summary>
-    public int Strength
-    {
-        get
-        {
-            return _strength;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                throw new Exception(negativeStatError);
-            }
-
-            _strength = value;
-        }
-    }
-    [SerializeField]
-    protected int _strength;
-
-    /// <summary>
-    /// This stat describes how clever a hunter is
-    /// This measures the hunter's ability to track enemies, his ablity to gain new lore,
-    /// his arkane abilities
-    /// </summary>
-    public int Inteligence
-    {
-        get
-        {
-            return _inteligence;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                throw new Exception(negativeStatError);
-            }
-
-            _inteligence = value;
-        }
-    }
-    [SerializeField]
-    protected int _inteligence;
-
-    /// <summary>
-    /// This describes how nimble a hunter is
-    /// This stat measures the hunter's ability to use ranged weapons, evade attacks,  
-    /// </summary>
-    public int Agility
-    {
-        get
-        {
-            return _agility;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                throw new Exception(negativeStatError);
-            }
-
-            _agility = value;
-        }
-    }
-    [SerializeField]
-    protected int _agility;
-
-    /// <summary>
-    /// This stat describes the creature's abilty to hide from search parties
-    /// This measures how smart a creature is and how likely it is for it to ambush a hunting party
-    /// </summary>
     public int Stealth
     {
         get
@@ -246,7 +150,7 @@ public class Monster
     /// This stat describes how well a hunter can use a ranged weapon
     /// This measures the damage a hunter applies to his standard ranged attacks
     /// </summary>
-    public float RangedDamage
+    public int RangedDamage
     {
         get
         {
@@ -262,13 +166,13 @@ public class Monster
         }
     }
     [SerializeField]
-    protected float _rangedDamage;
+    protected int _rangedDamage;
 
     /// <summary>
     /// This stat describes how well a hunter can use a melee weapon
     /// This measures the damage a hunter applies to his standard melee attacks
     /// </summary>
-    public float MeleeDamage
+    public int MeleeDamage
     {
         get
         {
@@ -284,11 +188,11 @@ public class Monster
         }
     }
     [SerializeField]
-    protected float _meleeDamage;
+    protected int _meleeDamage;
 
     // This stat describes how fast a hunter reacts to his environments 
     // This measures the hunter's abilty to react to special triggers, his turn order in combat
-    public float Reactivity
+    public int Reactivity
     {
         get
         {
@@ -304,10 +208,117 @@ public class Monster
 
         }
     }
+    [SerializeField]
+    protected int _reactivity;
+
+
+    public int DamageReduction
+    {
+        get
+        {
+            return _damageReduction;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                throw new Exception(negativeStatError);
+            }
+            _damageReduction = value;
+        }
+    }
+    [SerializeField]
+    protected int _damageReduction;
+
+
+
+    
+
+
+    public Monster(string name, Type _type, int strength, int agility, int inteligence, int maxhealth, int rewardLore, int level)
+                        : base (name, strength, inteligence, agility)
+    {
+        this.Name = name;
+        this.MonsterType = _type;
+        this.Level = level;
+        this.Strength = strength;
+        this.Inteligence = inteligence;
+        this.Agility = agility;
+
+        this.Stealth = inteligence + agility / 2;
+        this.RewardKnowledge = Level / 2 + inteligence;
+        this.MaxHealth = strength + 10 + agility / 2;
+        this.CurrentHealth = MaxHealth;
+        this.MeleeDamage = 10 + strength / 2;
+        this.RangedDamage = 10 + agility / 2;
+        this.Reactivity = 10 + agility + level;
+        this.DamageReduction = Reactivity / 3;
+        this.IsAlive = true;
+        this.HasTakenTurn = false;
+    }
+
+
+    public Monster(string name, string _type, int strength, int agility, int inteligence, int maxhealth, int rewardLore, int level)
+                   :base (name, strength, inteligence, agility)
+    {
+        Type mType;
+
+        switch (_type)
+        {
+            case "Undead":
+                mType = Type.Undead;
+                this.MonsterType = mType;
+                break;
+            case "Abberation":
+                mType = Type.Abberation;
+                this.MonsterType = mType;
+                break;
+            case "Construct":
+                mType = Type.Construct;
+                this.MonsterType = mType;
+                break;
+            case "Human":
+                mType = Type.Human;
+                this.MonsterType = mType;
+                break;
+            case "PlagueTouched":
+                mType = Type.PlagueTouched;
+                this.MonsterType = mType;
+                break;
+        }
+
+
+       
+        this.Name = name;
+        this.Level = level;
+        this.Strength = strength;
+        this.Inteligence = inteligence;
+        this.Agility = agility;
+
+        this.Stealth = inteligence + agility / 2;
+        this.RewardKnowledge = Level / 2 + inteligence;
+        this.MaxHealth = strength + 10 + agility / 2;
+        this.CurrentHealth = MaxHealth;
+        this.MeleeDamage = 10 + strength / 2;
+        this.RangedDamage = 10 + agility / 2;
+        this.Reactivity = 10 + agility + level;
+        this.DamageReduction = Reactivity / 3;
+        this.IsAlive = true;
+        this.HasTakenTurn = false;
+    }
+
+    //Combat Utility Functions:
+    
+
+    public int Attack()
+    {
+        int decision = UnityEngine.Random.Range(0, 3);
+        return decision;
+    }
 
     public void SpecialAbilty(Type _type)
     {
-        if(_type == Type.Abberation)
+        if (_type == Type.Abberation)
         {
 
         }
@@ -325,33 +336,10 @@ public class Monster
         }
         else if (_type == Type.Undead)
         {
-           
+
         }
     }
-    [SerializeField]
-    protected float _reactivity;
-
-
-    public Monster(string name, Type _type, int strength,int agility ,int inteligence, int stealth, int maxhealth, int rewardLore, int level)
-    {
- 
-        this.MonsterType = _type;
-        this.Name = name;
-
-        this.Level = level;
-        this.Strength = strength;
-        this.Inteligence = inteligence;
-        this.Agility = agility;
-
-        this.Stealth= inteligence + agility / 2;
-        this.RewardKnowledge= Level / 2 + inteligence;
-        this.MaxHealth = strength + 10 + agility / 2;
-        this.CurrentHealth = MaxHealth;
-        this.MeleeDamage = 10 + strength / 2;
-        this.RangedDamage = 10 + agility / 2;
-        this.Reactivity = 10 + agility + level;
-
-        
-
-    }
 }
+
+
+

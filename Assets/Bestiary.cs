@@ -5,8 +5,8 @@ using System.Text;
 
 public class Bestiary
 {
-    public int id;
-    public string type;
-    public string name;
-    public int level;
+    public string name, _type;
+
+
+    public int id, strength, agility, inteligence,  maxhealth, rewardLore, level;
 }

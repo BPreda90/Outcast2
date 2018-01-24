@@ -2,36 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoadBestiary : MonoBehaviour {
+public class LoadBestiary : MonoBehaviour
+{
 
-    GameData gameData;
-	// Use this for initialization
-	void Start () {
-        TextAsset bestiary = Resources.Load<TextAsset>("Bestiary");
-        string[] data = bestiary.text.Split(new char[] {'\n' });
+   public Main main;
+
+    // Use this for initialization
+    void Start()
+    {
+        main = FindObjectOfType<Main>();
+        TextAsset bestiary = Resources.Load<TextAsset>("Bestiary - Sheet1");
+        string[] data = bestiary.text.Split(new char[] { '\n' });
         Debug.Log(data.Length);
+        Debug.Log(data);
         for (int i = 1; i < data.Length; i++)
         {
             string[] row = data[i].Split(new char[] { ',' });
-            Bestiary b = new Bestiary();
-            int.TryParse(row[0], out b.id);
-            b.type = row[1];
-            b.name = row[2];
-            int.TryParse(row[3], out b.level);
 
-            gameData.beasts.Add(b);
 
-        }
+            Monster m = new Monster(row[1], row[2], int.Parse(row[3]), int.Parse(row[4]), int.Parse(row[5]), int.Parse(row[6]),
+                        int.Parse(row[7]), int.Parse(row[8]));
 
-        foreach(Bestiary b in gameData.beasts)
-        {
-            Debug.Log(b.name);
-        }
+            main.jData.gameData.monsters.Add(m);
             
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        }
+    }
+     
+
+
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
 }

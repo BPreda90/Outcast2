@@ -334,8 +334,12 @@ MonoBehaviour:
   gameData:
     date: 
     time: 
+    contracts: []
+    monsters: []
+    _myPlayer: []
     quest: []
     hunters: []
+    huntingParties: []
 --- !u!4 &472644229
 Transform:
   m_ObjectHideFlags: 0
@@ -403,13 +407,13 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
+    width: 0.85
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 479
+  orthographic size: 786.4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -465,9 +469,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 384ab86881b849e4dbcb5a96be0f6b76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  temp: 0
+  text: {fileID: 1602014913}
+  hp: {fileID: 0}
   jData: {fileID: 472644228}
   inputField: {fileID: 83757938}
-  text: {fileID: 1602014913}
+  myPlayer:
+    _name: 
+    _fortune: 0
+    _income: 0
+    _expenses: 0
+  myHunter:
+    _name: 
+    _age: 0
+    _strength: 0
+    _inteligence: 0
+    _agility: 0
+    _currentHealth: 0
+    _maxHealth: 0
+    _sanity: 0
+    _tracking: 0
+    _arkaneKnowledge: 0
+    _level: 0
+    _experience: 0
+    _monthlyPay: 0
+    _fortune: 0
+    _rangedDamage: 0
+    _meleeDamage: 0
+    _reactivity: 0
+    _damageReduction: 0
 --- !u!4 &1226477449
 Transform:
   m_ObjectHideFlags: 0
@@ -618,8 +648,8 @@ Canvas:
   m_GameObject: {fileID: 1309318828}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 2
+  m_Camera: {fileID: 1154782769}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -638,7 +668,7 @@ RectTransform:
   m_GameObject: {fileID: 1309318828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1602014912}
   - {fileID: 83757937}
@@ -647,9 +677,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 441.5, y: 163}
+  m_SizeDelta: {x: 883, y: 326}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1602014911
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,8 +712,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0024719, y: 116.4}
-  m_SizeDelta: {x: 1366, y: 535.1}
+  m_AnchoredPosition: {x: -551, y: -104}
+  m_SizeDelta: {x: 2585.8, y: 1167.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1602014913
 MonoBehaviour:
@@ -751,6 +781,7 @@ Transform:
   m_Children:
   - {fileID: 400265454}
   - {fileID: 472644229}
+  - {fileID: 2123740155}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -828,3 +859,44 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1918219902}
+--- !u!1 &2123740154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2123740155}
+  - component: {fileID: 2123740156}
+  m_Layer: 0
+  m_Name: LoadMonsters
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2123740155
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2123740154}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1685768414}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2123740156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2123740154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077e50cac53898c43870313ec8488f2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  main: {fileID: 0}

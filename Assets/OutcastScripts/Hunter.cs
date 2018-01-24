@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 [System.Serializable]
-public class Hunter
+public class Hunter : Unit
 {
 
     /// <summary>
@@ -11,31 +13,8 @@ public class Hunter
     /// Secondary stats should be derived from the primary stats (Accuracy, Damage, Health...)
     /// 
     /// </summary>
+    
 
-
-    string negativeStatError = "A character with a negative stat is impossible.";
-
-
-    // Primary Stats
-
-    public string Name
-    {
-        get
-        {
-            return _name;
-        }
-        set
-        {
-            if (value.Length <= 0)
-            {
-                throw new Exception(negativeStatError);
-            }
-
-            _name = value;
-        }
-    }
-    [SerializeField]
-    protected string _name;
 
     /// <summary>
     ///
@@ -67,81 +46,6 @@ public class Hunter
     }
     [SerializeField]
     protected int _age;
-
-    /// <summary>
-    /// This stat describes how effective a hunter is in close quarters combat
-    /// This measures the hunter's melee damage, part of his health, 
-    /// 
-    /// This stat will also passively increase the hunter's health each level
-    /// 
-    /// This stat is useful for melee hunter that will face monsters head on while 
-    /// the ranged hunter kills it from safety of the back row
-    /// </summary>
-    public int Strength
-    {
-        get
-        {
-            return _strength;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                throw new Exception(negativeStatError);
-            }
-
-            _strength = value;
-        }
-    }
-    [SerializeField]
-    protected int _strength;
-
-    /// <summary>
-    /// This stat describes how clever a hunter is
-    /// This measures the hunter's ability to track enemies, his ablity to gain new lore,
-    /// his arkane abilities
-    /// </summary>
-    public int Inteligence
-    {
-        get
-        {
-            return _inteligence;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                throw new Exception(negativeStatError);
-            }
-
-            _inteligence = value;
-        }
-    }
-    [SerializeField]
-    protected int _inteligence;
-
-    /// <summary>
-    /// This describes how nimble a hunter is
-    /// This stat measures the hunter's ability to use ranged weapons, evade attacks,  
-    /// </summary>
-    public int Agility
-    {
-        get
-        {
-            return _agility;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                throw new Exception(negativeStatError);
-            }
-
-            _agility = value;
-        }
-    }
-    [SerializeField]
-    protected int _agility;
 
 
     // Derived Stats
@@ -222,7 +126,7 @@ public class Hunter
     /// This stat describes how effective a hunter is in monster tracking
     /// This measures how likely a hunter will be abel to pinpoint the target monster
     /// </summary>
-    public float Tracking
+    public int Tracking
     {
         get
         {
@@ -239,7 +143,7 @@ public class Hunter
         }
     }
     [SerializeField]
-    protected float _tracking;
+    protected int _tracking;
 
     /// <summary>
     /// This stat describes how effective a hunter is in the R&D department
@@ -255,7 +159,7 @@ public class Hunter
     /// Arkane knowledge comes with a price as each time a threshhold is reached
     /// the hunter will take a hit in the sanity stat
     /// </summary>
-    public float ArkaneNnowledge
+    public int ArkaneNnowledge
     {
         get
         {
@@ -272,7 +176,7 @@ public class Hunter
         }
     }
     [SerializeField]
-    protected float _arkaneKnowledge;
+    protected int _arkaneKnowledge;
 
     /// <summary>
     /// This stat describes the hunter's current level
@@ -333,7 +237,7 @@ public class Hunter
     /// 
     /// The game will end if the guild ends up bankrupt.
     /// </summary>
-    public float MonthlyPay
+    public int MonthlyPay
     {
         get
         {
@@ -350,7 +254,7 @@ public class Hunter
         }
     }
     [SerializeField]
-    protected float _monthlyPay;
+    protected int _monthlyPay;
 
     /// <summary>
     /// This stat describes a hunter's personal fortune. A life of adventure can become a life of luxury, 
@@ -358,7 +262,7 @@ public class Hunter
     /// A hunter may use their fortune to better equip themselves, or relieve themselves of stress.
     /// 
     /// </summary>
-    public float Fortune
+    public int Fortune
     {
         get
         {
@@ -375,7 +279,7 @@ public class Hunter
         }
     }
     [SerializeField]
-    protected float _fortune;
+    protected int _fortune;
 
     // Combat Stats
 
@@ -383,7 +287,7 @@ public class Hunter
     /// This stat describes how well a hunter can use a ranged weapon
     /// This measures the damage a hunter applies to his standard ranged attacks
     /// </summary>
-    public float RangedDamage
+    public int RangedDamage
     {
         get
         {
@@ -399,13 +303,13 @@ public class Hunter
         }
     }
     [SerializeField]
-    protected float _rangedDamage;
+    protected int _rangedDamage;
 
     /// <summary>
     /// This stat describes how well a hunter can use a melee weapon
     /// This measures the damage a hunter applies to his standard melee attacks
     /// </summary>
-    public float MeleeDamage
+    public int MeleeDamage
     {
         get
         {
@@ -421,11 +325,11 @@ public class Hunter
         }
     }
     [SerializeField]
-    protected float _meleeDamage;
+    protected int _meleeDamage;
 
     // This stat describes how fast a hunter reacts to his environments 
     // This measures the hunter's abilty to react to special triggers, his turn order in combat
-    public float Reactivity
+    public int Reactivity
     {
         get
         {
@@ -442,14 +346,38 @@ public class Hunter
         }
     }
     [SerializeField]
-    protected float _reactivity;
+    protected int _reactivity;
+
+    /// <summary>
+    /// This stat describes how well protected a hunter is from monster attacks, the more armor the ranger has and how fast
+    /// he reacts to danger, the more protected he is
+    /// This measures the damage that is subtracted from any standard monster attack
+    /// </summary>
+    public int DamageReduction
+    {
+        get
+        {
+            return _damageReduction;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                throw new Exception(negativeStatError);
+            }
+            _damageReduction = value;
+        }
+    }
+    [SerializeField]
+    protected int _damageReduction;
 
     public Hunter(
                    string name,
-                   int strength, int inteligence, int agility, 
-                   int level, int experience, int age, 
-                   float monthlyPay
-                   )
+                   int strength, int inteligence, int agility,
+                   int level, int experience, int age, int monthlyPay
+                   
+
+                   ): base (name, strength, inteligence, agility )
     {
         // Pirmary Stats
         this.Name = name;
@@ -463,20 +391,26 @@ public class Hunter
         this.Strength = strength;
         this.Inteligence = inteligence;
         this.Agility = agility;
-       
+
 
         this.Tracking = inteligence + agility / 2;
-        this.ArkaneNnowledge = Level/2 + inteligence;
+        this.ArkaneNnowledge = Level / 2 + inteligence;
         this.MaxHealth = strength + 10 + agility / 2;
         this.CurrentHealth = MaxHealth;
-        this.Sanity = Level/2 + inteligence;
+        this.Sanity = Level / 2 + inteligence;
 
         this.MeleeDamage = 10 + strength / 2;
         this.RangedDamage = 10 + agility / 2;
         this.Reactivity = 10 + agility + level;
+        this.DamageReduction = Reactivity / 3;
 
         this.Fortune = 0 + monthlyPay;
 
+        this.IsAlive = true;
+        this.HasTakenTurn = false;
+
     }
+
+    //Combat Utility Functions:
 
 }

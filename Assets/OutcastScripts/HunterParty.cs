@@ -7,55 +7,50 @@ public class HunterParty : MonoBehaviour
 {
     public List<Hunter> HuntParty = new List<Hunter>();
     public Contract activeContract = null;
+    public Unit activeUnit;
+    public Hunter activeHunter;
+    public Monster activeMonster;
 
     public float PartyStrength;
-    public float PartyAccuracy;
+    public float PartyTracking;
     public float PartyLore;
     public float PartyLevel;
-    
+    public float PartyReactivity;
+
     public void GetPartyStats ()
     {
     float _strenght = 0;
-    float _accuracy = 0;
+    float _tracking = 0;
     float _lore = 0;
     float _level = 0;
-    
+    float _reactivity = 0;
         
         foreach (Hunter h in HuntParty)
         {
             _strenght += h.Strength;
-            _accuracy += h.Tracking;
+            _tracking +=Random.Range(1, h.Tracking) + h.Level;
             _lore += h.ArkaneNnowledge;
             _level += h.Level;
+            _reactivity += h.Reactivity; 
         }
 
         PartyStrength = _strenght;
-        PartyAccuracy = _accuracy;
+        PartyTracking = _tracking;
         PartyLore = _lore;
         PartyLevel = _level;
+        PartyReactivity = _reactivity;
     }
 
     public void ClearPartyStats()
     {
         PartyStrength = 0;
-        PartyAccuracy = 0;
+        PartyTracking = 0;
         PartyLore = 0;
         PartyLevel = 0;
-    }
+        PartyReactivity = 0;
+    }  
 
-
-    public void TrackMonster() { }
-
-    public void HuntMonster (Monster m)
-    {
-        TrackMonster();
-    }
     
-    public void InstantiateParty()
-    {
-        
-    }
-
     // Use this for initialization
     void Start()
     {

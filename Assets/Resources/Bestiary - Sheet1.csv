@@ -1,0 +1,13 @@
+id,name,type,strength,agility,inteligence,maxhealth,rewardLore,level
+0,ghoul,Undead,4,4,4,40,4,1
+1,strighoy,Undead,6,6,6,60,6,3
+2,morhoy,Undead,8,8,8,80,8,6
+3,litch,Undead,10,10,10,100,10,10
+4,wererats,PlagueTouched,6,6,6,60,5,3
+5,werewolvs,PlagueTouched,8,8,8,80,7,6
+6,varkolak,PlagueTouched,10,10,10,100,9,10
+7,griffin,PlagueTouched,12,12,12,120,11,14
+8,prowler,Abberation,8,8,8,80,6,6
+9,shade,Abberation,10,10,10,100,8,10
+10,zmey,Abberation,14,14,14,120,10,14
+11,horror,Abberation,16,16,16,140,12,18

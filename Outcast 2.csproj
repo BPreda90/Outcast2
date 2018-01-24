@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -92,12 +90,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\BaseClases\HealingPowder.cs" />
-    <Compile Include="Assets\BaseClases\Hero.cs" />
-    <Compile Include="Assets\BaseClases\Item.cs" />
-    <Compile Include="Assets\BaseClases\Location.cs" />
-    <Compile Include="Assets\BaseClases\Unit.cs" />
-    <Compile Include="Assets\BaseClases\Weapon.cs" />
     <Compile Include="Assets\Bestiary.cs" />
     <Compile Include="Assets\LoadBestiary.cs" />
     <Compile Include="Assets\OutcastScripts\Contract.cs" />
@@ -111,6 +103,7 @@
     <Compile Include="Assets\OutcastScripts\Monster.cs" />
     <Compile Include="Assets\OutcastScripts\Player.cs" />
     <Compile Include="Assets\OutcastScripts\Time.cs" />
+    <Compile Include="Assets\OutcastScripts\Unit.cs" />
     <Compile Include="Assets\Quests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

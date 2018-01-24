@@ -24,4 +24,8 @@ public class GameData
 
     public Time savedTime = new Time(1,1,1);
 
+    public List<HunterParty> huntingParties = new List<HunterParty>();
+
+    
+
 }
