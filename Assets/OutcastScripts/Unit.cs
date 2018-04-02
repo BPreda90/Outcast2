@@ -143,4 +143,10 @@ public abstract class Unit
     {
 
     }
+
+    public int AIActionDecision()
+    {
+        int decision = UnityEngine.Random.Range(0, 2);
+        return decision;
+    }
 }

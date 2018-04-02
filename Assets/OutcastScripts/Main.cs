@@ -4,6 +4,7 @@ using System;
 using UnityEngine.UI;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Main : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class Main : MonoBehaviour
         //Utilities
         HunterPick,
         ContractPick,
-
+        Combat,
 
 
 
@@ -83,6 +84,9 @@ public class Main : MonoBehaviour
                 break;
             case States.Armory:
                 Armory();
+                break;
+            case States.Combat:
+                Combat(0);
                 break;
         }
     }
@@ -400,7 +404,7 @@ public class Main : MonoBehaviour
 
     void CreateHunterParty()
     {
-        text.text = "Create a new party?/n" +
+        text.text = "Create a new party?\n" +
             "If yes press Space, else press Escape to discard";
         {
             GameObject go = new GameObject();
@@ -507,6 +511,11 @@ public class Main : MonoBehaviour
         Debug.Log(hp.PartyTracking);
         hp.activeContract.GetMonstersStats();
         Debug.Log(hp.activeContract.MonstersStealth);
+
+        // Ordering the combatants by their Agility
+        hp.HuntParty = hp.HuntParty.OrderBy(x => x.Agility).ToList();
+        hp.activeContract.MonstersGroup = hp.activeContract.MonstersGroup.OrderBy(x => x.Agility).ToList();
+
         if (hp.PartyTracking <= (1 / 2 * hp.activeContract.MonstersStealth))
         {
             Debug.Log("Critical Fail! \n While attempting to track the monsters one of the hunters got ambushed and ravaged by the beasts");
@@ -527,7 +536,7 @@ public class Main : MonoBehaviour
             Debug.Log("Tracking was successful, the hunters managed to track down the beasts. They will now attempt to fulfill the contract.");
             hp.ClearPartyStats();
             hp.activeContract.ClearMonsterStats();
-            Combat(0);
+            state = States.Combat;
         }
         else
         {
@@ -539,7 +548,7 @@ public class Main : MonoBehaviour
                 h.ArkaneNnowledge += hp.activeContract.MonstersGroup[t].RewardKnowledge;
             }
             hp.activeContract.MonstersGroup.Remove(hp.activeContract.MonstersGroup[t]);
-            if(hp.activeContract.MonstersGroup.Count<=0)
+            if (hp.activeContract.MonstersGroup.Count <= 0)
             {
                 Debug.Log("The sole monster that was in the contract got killed by the hunters' trap. The reward can be already collected"
                     + "\n Combat is skipped");
@@ -548,45 +557,53 @@ public class Main : MonoBehaviour
             }
             else
             {
-                Combat(0);
+                state = States.Combat; ;
             }
         }
     }
     //TODO: Start writing UI functionality
 
-    void Combat( int roundCounter)
-    {
-        {
 
-            // Check that at least one combatant on both sides is alive
-            int monsterCount = 0, hunterCount = 0;
-            Debug.Log("Combat has been initiated");
-            
-            foreach (Hunter h in hp.HuntParty)
-                if(h.IsAlive)
-                {
-                    hunterCount++;
-                }
-            foreach(Monster m in hp.activeContract.MonstersGroup)
-                if(m.IsAlive)
-                {
-                    monsterCount++;
-                }
-            Debug.Log("Combatant count is over. We have " + hunterCount +" hunters alive. And" + monsterCount + " monsters alive.");
-            if (hunterCount == 0 || monsterCount == 0)
+
+
+    void Combat(int roundCounter)
+    {
+
+        // Check that at least one combatant on both sides is alive
+        text.text = "Combat has started";
+                    
+        int monstersAliveCount = 0, huntersAliveCount = 0, aiDecision = 0;
+        Debug.Log("Combat has been initiated");
+
+        foreach (Hunter h in hp.HuntParty)
+            if (h.IsAlive)
             {
-                if (hunterCount == 0)
+                h.HasTakenTurn = false;
+                huntersAliveCount++;
+            }
+        foreach (Monster m in hp.activeContract.MonstersGroup)
+            if (m.IsAlive)
+            {
+                m.HasTakenTurn = false;
+                monstersAliveCount++;
+            }
+        Debug.Log("Combatant count is over. We have " + huntersAliveCount + " hunters alive. And" + monstersAliveCount + " monsters alive.");
+            if (huntersAliveCount == 0 || monstersAliveCount == 0)
+            {
+                if (huntersAliveCount == 0)
                 {
-                    Debug.Log("The hunt has failed! All your hunters have been killed by the monsters.");                   
-                    return;
+                    Debug.Log("The hunt has failed! All your hunters have been killed by the monsters.");
+                    HuntPartyCleanup();
+                    state = States.Map;
                 }
                 else
                 {
                     Debug.Log("The hunt has succeded! All the beasts have been vanquised and your hunters are returning " +
                         "safely to the guild.");
+                    HuntPartyCleanup();
                     myPlayer.Fortune = hp.activeContract.Reward;
-                    hp.activeContract = null;                  
-                    return;
+                    hp.activeContract = null;
+                    state = States.Map;
                 }
             }
             else
@@ -595,104 +612,325 @@ public class Main : MonoBehaviour
                 roundCounter = AddCounter(roundCounter);
                 Debug.Log("Current combat round is:" + roundCounter);
             }
+        text.text = "Current combat round is:" + roundCounter.ToString() +
+            "\n press space to initiate the next round";
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
 
             /// The combat starts here
             /// I have to go through all the combatants one by one in order of reactivity and have them
             /// each take an action then mark them that they have taken an action
-
-            // Count if there are any 
-            for (int i = hp.HuntParty.Count-1; i == 0; i--)
+            int monstersToTakeTurn = 0, huntersToTakeTurn = 0;
+            foreach (Monster m in hp.activeContract.MonstersGroup)
             {
-                
-            }
-        }
-        
-        // Check that there are combatants on both sides
-        while(true)
-        {
-            //Check which party is going to react first
-            if (hp.PartyReactivity >= hp.activeContract.MonsterReactivity)
-            {
-                int t = 0;
-                foreach (Monster m in hp.activeContract.MonstersGroup)
+                if (m.HasTakenTurn == false)
                 {
-                    Debug.Log(m.Name + " was attacked by hunter " + hp.HuntParty[t].Name);
-                    m.CurrentHealth -= hp.HuntParty[t].MeleeDamage;
-                    t++;
-                    if (m.CurrentHealth <= 0)
-                    {
-                        Debug.Log("Monster " + m.Name + " is dead!");
-                        foreach (Hunter h in hp.HuntParty)
-                        {
-                            h.ArkaneNnowledge += m.RewardKnowledge;
-                        }
-                        hp.activeContract.MonstersGroup.Remove(m);
-                    }
-                }
-                t = 0;
-                foreach (Hunter h in hp.HuntParty)
-                {
-                    Debug.Log(h.Name + " was attacked by monster" + hp.activeContract.MonstersGroup[t].Name);
-                    h.CurrentHealth -= hp.activeContract.MonstersGroup[t].MeleeDamage;
-                    t++;
-                    if (h.CurrentHealth <= 0)
-                    {
-                        Debug.Log("Hunter " + h.Name + " is dead!");
-                        hp.HuntParty.Remove(h);
-                        DismissHunter(h);
-                    }
+                    monstersToTakeTurn++;
                 }
             }
-            if (hp.PartyReactivity < hp.activeContract.MonsterReactivity)
-            {
-                int t = 0;
-                foreach (Hunter h in hp.HuntParty)
-                {
-                    Debug.Log(h.Name + " was attacked by monster" + hp.activeContract.MonstersGroup[t].Name);
-                    h.CurrentHealth -= hp.activeContract.MonstersGroup[t].MeleeDamage;
-                    t++;
-                    if (h.CurrentHealth <= 0)
-                    {
-                        Debug.Log("Hunter " + h.Name + " is dead!");
-                        hp.HuntParty.Remove(h);
-                        DismissHunter(h);
-                    }
-                }
-                t = 0;
-                foreach (Monster m in hp.activeContract.MonstersGroup)
-                {
-                    Debug.Log(m.Name + " was attacked by hunter " + hp.HuntParty[t].Name);
-                    m.CurrentHealth -= hp.HuntParty[t].MeleeDamage;
-                    t++;
-                    if (m.CurrentHealth <= 0)
-                    {
-                        Debug.Log("Monster " + m.Name + " is dead!");
-                        foreach (Hunter h in hp.HuntParty)
-                        {
-                            h.ArkaneNnowledge += m.RewardKnowledge;
-                        }
-                        hp.activeContract.MonstersGroup.Remove(m);
-                    }
-                }
 
+            foreach (Hunter h in hp.HuntParty)
+            {
+                if (h.HasTakenTurn == false)
+                {
+                    huntersToTakeTurn++;
+                }
+            }
+
+            // Check who goes first
+            while (monstersToTakeTurn > 0 && huntersToTakeTurn > 0)
+            {
+                Debug.Log("Combat has started");
+                FindNextHunter(hp, huntersToTakeTurn);
+                FindNextMonster(hp, monstersToTakeTurn);
+                if (hp.activeHunter.Agility > hp.activeMonster.Agility)
+                {// Monster acts first
+                    Debug.Log("Monsters act first!");
+                    aiDecision = hp.activeMonster.AIActionDecision();
+                    switch (aiDecision)
+                    {
+                        case 0:
+                            // Monster Attacks a random hunter
+                            FindARandomLivingHunter(hp, hp.HuntParty.Count);
+                            if (hp.activeMonster.MeleeDamage - hp.activeHunter.DamageReduction <= 0)
+                            {
+                                Debug.Log("Monster failed to hit!");
+                                hp.activeMonster.HasTakenTurn = true;
+                                break;
+                            }
+                            hp.activeHunter.CurrentHealth -= hp.activeMonster.MeleeDamage - hp.activeHunter.DamageReduction;
+                            Debug.Log(hp.activeHunter.Name + " was attacked by" + hp.activeMonster.Name);
+                            hp.activeMonster.HasTakenTurn = true;
+                            if (hp.activeHunter.CurrentHealth <= 0)
+                            {
+                                hp.activeHunter.IsAlive = false;
+                                huntersAliveCount--;
+                                if (huntersAliveCount == 0)
+                                {
+                                    Debug.Log("All hunters are dead");
+                                    break;
+                                }
+                            }
+                            break;
+
+                        case 1:
+                            // To be modified
+                            // Monster Attacks weakest hunter
+                            FindARandomLivingHunter(hp, hp.HuntParty.Count);
+                            if (hp.activeMonster.MeleeDamage - hp.activeHunter.DamageReduction <= 0)
+                            {
+                                Debug.Log("Monster failed to hit!");
+                                hp.activeMonster.HasTakenTurn = true;
+                                break;
+                            }
+                            hp.activeHunter.CurrentHealth -= hp.activeMonster.MeleeDamage - hp.activeHunter.DamageReduction;
+                            Debug.Log(hp.activeHunter.Name + " was attacked by" + hp.activeMonster.Name);
+                            hp.activeMonster.HasTakenTurn = true;
+                            if (hp.activeHunter.CurrentHealth <= 0)
+                            {
+                                hp.activeHunter.IsAlive = false;
+                                huntersAliveCount--;
+                                if (huntersAliveCount == 0)
+                                {
+                                    Debug.Log("All hunters are dead");
+                                    return;
+                                }
+                            }
+                            break;
+
+                        case 2:
+                            // To be modified
+                            // Monster Attacks the same as last monster 
+                            FindARandomLivingHunter(hp, hp.HuntParty.Count);
+                            if (hp.activeMonster.MeleeDamage - hp.activeHunter.DamageReduction <= 0)
+                            {
+                                Debug.Log("Monster failed to hit!");
+                                hp.activeMonster.HasTakenTurn = true;
+                                break;
+                            }
+                            hp.activeHunter.CurrentHealth -= hp.activeMonster.MeleeDamage - hp.activeHunter.DamageReduction;
+                            Debug.Log(hp.activeHunter.Name + " was attacked by" + hp.activeMonster.Name);
+                            hp.activeMonster.HasTakenTurn = true;
+                            if (hp.activeHunter.CurrentHealth <= 0)
+                            {
+                                hp.activeHunter.IsAlive = false;
+                                huntersAliveCount--;
+                                if (huntersAliveCount == 0)
+                                {
+                                    Debug.Log("All hunters are dead");
+                                    return;
+                                }
+                            }
+                            break;
+                    }
+                }
+                else
+                {// hunters act first
+                    Debug.Log("Hunters act first!");
+                    aiDecision = hp.activeHunter.AIActionDecision();
+                    switch (aiDecision)
+                    {
+                        case 0:
+                            // Monster Attacks a random hunter
+                            FindARandomLivingMonster(hp, hp.activeContract.MonstersGroup.Count);
+                            if (hp.activeHunter.MeleeDamage - hp.activeMonster.DamageReduction <= 0)
+                            {
+                                Debug.Log("Hunter failed to hit!");
+                                hp.activeHunter.HasTakenTurn = true;
+                                break;
+                            }
+                            hp.activeMonster.CurrentHealth -= hp.activeHunter.MeleeDamage - hp.activeMonster.DamageReduction;
+                            Debug.Log(hp.activeMonster.Name + " was attacked by" + hp.activeHunter.Name);
+                            hp.activeHunter.HasTakenTurn = true;
+                            if (hp.activeMonster.CurrentHealth <= 0)
+                            {
+                                hp.activeMonster.IsAlive = false;
+                                monstersAliveCount--;
+                                if (monstersAliveCount == 0)
+                                {
+                                    Debug.Log("All monsters are dead");
+                                    return;
+                                }
+                            }
+                            break;
+
+                        case 1:
+                            // To be modified
+                            // Monster Attacks weakest hunter
+                            FindARandomLivingMonster(hp, hp.activeContract.MonstersGroup.Count);
+                            if (hp.activeHunter.MeleeDamage - hp.activeMonster.DamageReduction <= 0)
+                            {
+                                Debug.Log("Hunter failed to hit!");
+                                hp.activeHunter.HasTakenTurn = true;
+                                break;
+                            }
+                            hp.activeMonster.CurrentHealth -= hp.activeHunter.MeleeDamage - hp.activeMonster.DamageReduction;
+                            Debug.Log(hp.activeMonster.Name + " was attacked by" + hp.activeHunter.Name);
+                            hp.activeHunter.HasTakenTurn = true;
+                            if (hp.activeMonster.CurrentHealth <= 0)
+                            {
+                                hp.activeMonster.IsAlive = false;
+                                monstersAliveCount--;
+                                if (monstersAliveCount == 0)
+                                {
+                                    Debug.Log("All monsters are dead");
+                                    return;
+                                }
+                            }
+                            break;
+
+                        case 2:
+                            // To be modified
+                            // Monster Attacks the same as last monster 
+                            FindARandomLivingMonster(hp, hp.activeContract.MonstersGroup.Count);
+                            if (hp.activeHunter.MeleeDamage - hp.activeMonster.DamageReduction <= 0)
+                            {
+                                Debug.Log("Hunter failed to hit!");
+                                hp.activeHunter.HasTakenTurn = true;
+                                break;
+                            }
+                            hp.activeMonster.CurrentHealth -= hp.activeHunter.MeleeDamage - hp.activeMonster.DamageReduction;
+                            Debug.Log(hp.activeMonster.Name + " was attacked by" + hp.activeHunter.Name);
+                            hp.activeHunter.HasTakenTurn = true;
+                            if (hp.activeMonster.CurrentHealth <= 0)
+                            {
+                                hp.activeMonster.IsAlive = false;
+                                monstersAliveCount--;
+                                if (monstersAliveCount == 0)
+                                {
+                                    Debug.Log("All monsters are dead");
+                                    return;
+                                }
+                            }
+                            break;
+                    }
+                }
             }
         }
-        if (hp.HuntParty.Count == 0)
-        {
-            Debug.Log("The party has been wiped by the monsters. Combat is over!");
-            
-        }
-        else
-        {
-            Debug.Log("The monsters have been defeated and the hunters are returning to the guild!");
-            myPlayer.Fortune += hp.activeContract.Reward;           
-            hp.activeContract.ClearMonsterStats();
-            hp.ClearPartyStats();
-            hp.activeContract = null;
-
-        }
-
     }
+
+    void HuntPartyCleanup()
+    {
+        List<Hunter> tempHunterList = new List<Hunter>();
+        foreach (Hunter h in hp.HuntParty)
+        {
+            if (h.IsAlive == true)
+            {
+                tempHunterList.Add(h);
+            }
+        }
+        hp.HuntParty.Clear();
+        hp.HuntParty.AddRange(tempHunterList);
+        tempHunterList = null;
+    }
+
+
+
+
+    //Combat Helper Functions
+
+    void FindNextMonster(HunterParty hp, int monsterCount)
+    {
+        if (monsterCount == 0)
+        {
+            Debug.LogError("Hunter Count = 0, there are no living hunters on the field, something went wrong");
+            return;
+        }
+
+        for (int i = 0; i < monsterCount; i++)
+        {
+            if (hp.activeContract.MonstersGroup[i].IsAlive == true)
+            {
+                if (hp.activeContract.MonstersGroup[i].HasTakenTurn == false)
+                {
+                    hp.activeMonster = hp.activeContract.MonstersGroup[i];
+                    return;
+                }
+            }
+        }
+        if (hp.activeMonster == null)
+        {
+            Debug.Log("There are no more monsters available!");
+            return;
+        }
+    }
+
+    void FindNextHunter(HunterParty hunterParty, int hunterCount)
+    {
+        Debug.Log("Current hunter count parameter is " + hunterCount.ToString());
+        if (hunterCount == 0)
+        {
+            Debug.LogError("Hunter Count = 0, there are no living hunters on the field, something went wrong");
+            return;
+        }
+
+        for (int i = 0; i < hunterCount; i++)
+        {
+            Debug.Log(hp.HuntParty[i].Name);
+            if (hp.HuntParty[i].IsAlive == true)
+            {
+                if (hp.HuntParty[i].HasTakenTurn == false)
+                {
+                    Debug.Log("Current hunter count parameter is " + hunterCount.ToString());
+                    hp.activeHunter = hp.HuntParty[i];
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+        if (hp.activeMonster == null)
+        {
+            Debug.Log("There are no more hunters available!");
+            return;
+        }
+    }
+
+    void FindARandomLivingHunter(HunterParty hp, int hunterCount)
+    {
+        bool isHunterAlive = false;
+        //Sanity Check
+        if (hunterCount == 0)
+        {
+            Debug.LogError("Hunter Count = 0, there are no living hunters on the field, something went wrong");
+            return;
+        }
+        while (isHunterAlive == false)
+        {
+            int i = UnityEngine.Random.Range(0, hunterCount);
+            if (hp.HuntParty[i].IsAlive == true)
+            {
+                hp.activeHunter = hp.HuntParty[i];
+                isHunterAlive = true;
+                return;
+            }
+        }
+    }
+
+    void FindARandomLivingMonster(HunterParty hp, int monsterCount)
+    {
+        bool isMonsterAlive = false;
+        //Sanity Check
+        if (monsterCount == 0)
+        {
+            Debug.LogError("Monster Count = 0, there are no living monsters on the field, something went wrong");
+            return;
+        }
+        while (isMonsterAlive == false)
+        {
+            int i = UnityEngine.Random.Range(0, monsterCount);
+            if (hp.activeContract.MonstersGroup[i].IsAlive == true)
+            {
+                hp.activeMonster = hp.activeContract.MonstersGroup[i];
+                isMonsterAlive = true;
+                return;
+            }
+        }
+    }
+
 
     int AddCounter(int t)
     {

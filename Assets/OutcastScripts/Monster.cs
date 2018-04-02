@@ -63,11 +63,6 @@ public class Monster: Unit
         }
         set
         {
-            if (value < 0)
-            {
-                throw new Exception(negativeStatError);
-            }
-
             _currentHealth = value;
         }
     }
@@ -310,11 +305,7 @@ public class Monster: Unit
     //Combat Utility Functions:
     
 
-    public int Attack()
-    {
-        int decision = UnityEngine.Random.Range(0, 3);
-        return decision;
-    }
+ 
 
     public void SpecialAbilty(Type _type)
     {

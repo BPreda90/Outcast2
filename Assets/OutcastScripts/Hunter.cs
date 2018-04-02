@@ -65,11 +65,6 @@ public class Hunter : Unit
         }
         set
         {
-            if (value < 0)
-            {
-                throw new Exception(negativeStatError);
-            }
-
             _currentHealth = value;
         }
     }
