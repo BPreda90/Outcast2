@@ -13,7 +13,7 @@ public class Hunter : Unit
     /// Secondary stats should be derived from the primary stats (Accuracy, Damage, Health...)
     /// 
     /// </summary>
-    
+
 
 
     /// <summary>
@@ -71,6 +71,20 @@ public class Hunter : Unit
     [SerializeField]
     protected int _currentHealth;
 
+    public int ModifierCurrentHealth
+    {
+        get
+        {
+            return _modifierCurrentHealth;
+        }
+        set
+        {
+            _modifierCurrentHealth = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierCurrentHealth;
+
     public int MaxHealth
     {
         get
@@ -90,6 +104,19 @@ public class Hunter : Unit
     [SerializeField]
     protected int _maxHealth;
 
+    public int ModifierMaxHealth
+    {
+        get
+        {
+            return _modifierMaxHealth;
+        }
+        set
+        {
+            _modifierMaxHealth = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierMaxHealth;
 
     /// <summary>
     /// This stat describes the hunter's mental resiliance 
@@ -117,6 +144,20 @@ public class Hunter : Unit
     [SerializeField]
     protected int _sanity;
 
+    public int ModifierSanity
+    {
+        get
+        {
+            return _modifierSanity;
+        }
+        set
+        {
+            _modifierSanity = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierSanity;
+
     /// <summary>
     /// This stat describes how effective a hunter is in monster tracking
     /// This measures how likely a hunter will be abel to pinpoint the target monster
@@ -139,6 +180,20 @@ public class Hunter : Unit
     }
     [SerializeField]
     protected int _tracking;
+
+    public int ModifierTracking
+    {
+        get
+        {
+            return _modifierTracking;
+        }
+        set
+        {
+            _modifierTracking = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierTracking;
 
     /// <summary>
     /// This stat describes how effective a hunter is in the R&D department
@@ -172,6 +227,20 @@ public class Hunter : Unit
     }
     [SerializeField]
     protected int _arkaneKnowledge;
+
+    public int ModifierArkaneNnowledge
+    {
+        get
+        {
+            return _modifierArkaneKnowledge;
+        }
+        set
+        {
+            _modifierArkaneKnowledge = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierArkaneKnowledge;
 
     /// <summary>
     /// This stat describes the hunter's current level
@@ -221,6 +290,21 @@ public class Hunter : Unit
     }
     [SerializeField]
     protected int _experience;
+
+    public int ModifierExperience
+    {
+        get
+        {
+            return _modifierExperience;
+        }
+        set
+        {
+            _modifierExperience = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierExperience;
+
 
     /// <summary>
     /// This stat describes the hunter's monthyl pay. 
@@ -300,6 +384,20 @@ public class Hunter : Unit
     [SerializeField]
     protected int _rangedDamage;
 
+    public int ModifierRangedDamage
+    {
+        get
+        {
+            return _modifierRangedDamage;
+        }
+        set
+        {
+            _modifierRangedDamage = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierRangedDamage;
+
     /// <summary>
     /// This stat describes how well a hunter can use a melee weapon
     /// This measures the damage a hunter applies to his standard melee attacks
@@ -322,6 +420,20 @@ public class Hunter : Unit
     [SerializeField]
     protected int _meleeDamage;
 
+    public int ModifierMeleeDamage
+    {
+        get
+        {
+            return _modifierMeleeDamage;
+        }
+        set
+        {
+            _modifierMeleeDamage = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierMeleeDamage;
+
     // This stat describes how fast a hunter reacts to his environments 
     // This measures the hunter's abilty to react to special triggers, his turn order in combat
     public int Reactivity
@@ -342,6 +454,21 @@ public class Hunter : Unit
     }
     [SerializeField]
     protected int _reactivity;
+
+    public int ModifierReactivity
+    {
+        get
+        {
+            return _modifierReactivity;
+        }
+        set
+        {
+            _modifierReactivity = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierReactivity;
+
 
     /// <summary>
     /// This stat describes how well protected a hunter is from monster attacks, the more armor the ranger has and how fast
@@ -366,38 +493,55 @@ public class Hunter : Unit
     [SerializeField]
     protected int _damageReduction;
 
+    public int ModifierDamageReduction
+    {
+        get
+        {
+            return _modifierDamageReduction;
+        }
+        set
+        {
+            _modifierDamageReduction = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierDamageReduction;
+
+
     public Hunter(
                    string name,
                    int strength, int inteligence, int agility,
                    int level, int experience, int age, int monthlyPay
-                   
 
-                   ): base (name, strength, inteligence, agility )
+
+                   ) : base(name, strength, inteligence, agility)
     {
+        InitializeModifiers();
         // Pirmary Stats
+
         this.Name = name;
 
         this.Level = level;
-        this.Experience = experience;
+        this.Experience = experience + ModifierExperience;
         this.Age = age;
 
         this.MonthlyPay = monthlyPay;
 
-        this.Strength = strength;
-        this.Inteligence = inteligence;
-        this.Agility = agility;
+        this.Strength = strength + ModifierStrength;
+        this.Inteligence = inteligence + ModifierInteligence;
+        this.Agility = agility + ModifierAgility;
 
 
-        this.Tracking = inteligence + agility / 2;
-        this.ArkaneNnowledge = Level / 2 + inteligence;
-        this.MaxHealth = strength + 10 + agility / 2;
-        this.CurrentHealth = MaxHealth;
-        this.Sanity = Level / 2 + inteligence;
+        this.Tracking = inteligence + agility / 2 + ModifierTracking;
+        this.ArkaneNnowledge = Level / 2 + inteligence + ModifierArkaneNnowledge;
+        this.MaxHealth = strength + 10 + agility / 2 + ModifierMaxHealth;
+        this.CurrentHealth = MaxHealth + ModifierCurrentHealth;
+        this.Sanity = Level / 2 + inteligence + ModifierSanity;
 
-        this.MeleeDamage = 10 + strength / 2;
-        this.RangedDamage = 10 + agility / 2;
-        this.Reactivity = 10 + agility + level;
-        this.DamageReduction = Reactivity / 3;
+        this.MeleeDamage = 10 + strength / 2 + ModifierMeleeDamage;
+        this.RangedDamage = 10 + agility / 2 + ModifierRangedDamage;
+        this.Reactivity = 10 + agility + level + ModifierReactivity;
+        this.DamageReduction = Reactivity / 3 + ModifierDamageReduction;
 
         this.Fortune = 0 + monthlyPay;
 
@@ -406,6 +550,44 @@ public class Hunter : Unit
 
     }
 
+    public void InitializeModifiers()
+    {
+        ModifierAgility = 0;
+        ModifierArkaneNnowledge = 0;
+        ModifierCurrentHealth = 0;
+        ModifierDamageReduction = 0;
+        ModifierExperience = 0;
+        ModifierInteligence = 0;
+        ModifierMaxHealth = 0;
+        ModifierMeleeDamage = 0;
+        ModifierRangedDamage = 0;
+        ModifierReactivity = 0;
+        ModifierSanity = 0;
+        ModifierStrength = 0;
+        ModifierTracking = 0;
+
+    }
+
+    public void UpdateStatsWithModifiers()
+    {
+        this.Experience += ModifierExperience;
+        this.Strength += ModifierStrength;
+        this.Inteligence += ModifierInteligence;
+        this.Agility += ModifierAgility;
+
+
+        this.Tracking += ModifierTracking;
+        this.ArkaneNnowledge += ModifierArkaneNnowledge;
+        this.MaxHealth += ModifierMaxHealth;
+        this.CurrentHealth += ModifierCurrentHealth;
+        this.Sanity += ModifierSanity;
+
+        this.MeleeDamage += ModifierMeleeDamage;
+        this.RangedDamage += ModifierRangedDamage;
+        this.Reactivity += ModifierReactivity;
+        this.DamageReduction += ModifierDamageReduction;
+
+    }
     //Combat Utility Functions:
 
 }

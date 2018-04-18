@@ -87,6 +87,19 @@ public abstract class Unit
     [SerializeField]
     protected int _strength;
 
+    public int ModifierStrength
+    {
+        get
+        {
+            return _modifierStrength;
+        }
+        set
+        {
+            _modifierStrength = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierStrength;
     /// <summary>
     /// This stat describes how clever a unit is
     /// This measures the unit's ability to track or hide from enemies, his ablity to gain new lore,
@@ -111,6 +124,20 @@ public abstract class Unit
     [SerializeField]
     protected int _inteligence;
 
+    public int ModifierInteligence
+    {
+        get
+        {
+            return _modifierInteligence;
+        }
+        set
+        {
+            _modifierInteligence = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierInteligence;
+
     /// <summary>
     /// This describes how nimble a hunter is
     /// This stat measures the hunter's ability to use ranged weapons, evade attacks,  
@@ -133,6 +160,21 @@ public abstract class Unit
     }
     [SerializeField]
     protected int _agility;
+
+    public int ModifierAgility
+    {
+        get
+        {
+            return _modifierAgility;
+        }
+        set
+        {
+            _modifierAgility = value;
+        }
+    }
+    [SerializeField]
+    protected int _modifierAgility;
+
 
     public Unit(string name, int strength, int inteligence, int agility)
     {
