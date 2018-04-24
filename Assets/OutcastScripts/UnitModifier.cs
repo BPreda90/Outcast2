@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+
 namespace Assets.OutcastScripts
 {
    public abstract class UnitModifier
@@ -337,8 +338,9 @@ namespace Assets.OutcastScripts
 
 
 
-        public Item(bool equipped, string name, int modifierAgility, int modifierArkaneNnowledge, int modifierCurrentHealth, int modifierDamageReduction,
-              int modifierExperience, int modifierInteligence, int modifierMaxHealth, int modifierMeleeDamage, int modifierRangedDamage,
+        public Item(bool equipped, string name, Type itemType, Slot itemSlot, int modifierAgility, int modifierArkaneNnowledge, 
+              int modifierCurrentHealth, int modifierDamageReduction, int modifierExperience, 
+              int modifierInteligence, int modifierMaxHealth,int modifierMeleeDamage, int modifierRangedDamage, 
               int modifierReactivity, int modifierSanity, int modifierStrength, int modifierTracking)
 
               : base(modifierAgility, modifierArkaneNnowledge, modifierCurrentHealth, modifierDamageReduction,
@@ -348,10 +350,13 @@ namespace Assets.OutcastScripts
             Equipped = equipped;
             if (Equipped != false)
             {
-                Debug.LogError("This item has been created with the equipped variable true, please only initialize items in an equipped ")
-                Equipped = false;
+                Debug.LogError("This item has been created with the equipped variable true," +
+                    " please only initialize items in an equipped ");
+                return;
             }
             Name = name;
+            ItemType = itemType;
+            ItemSlot = itemSlot;
             ModifierAgility = modifierAgility;
             ModifierArkaneNnowledge = modifierArkaneNnowledge;
             ModifierCurrentHealth = modifierCurrentHealth;
@@ -366,6 +371,43 @@ namespace Assets.OutcastScripts
             ModifierStrength = modifierStrength;
             ModifierTracking = modifierTracking;
         }
-
     }
+
+    public class ItemUnitTest
+    {
+        Item TestItem = new Item(false, "UnitTestItem", Item.Type.Cursed, Item.Slot.Head, 10, 10,10,10,10,10,10,10,10,10,10,10,10);
+        void Test (Item i)
+        {
+            if(TestItem.ItemSlot != Item.Slot.Head)
+            {
+                Debug.LogError("Item Slot unit test failed!" +
+                    "Item.Slot is not propperly implemented!");
+                Debug.Log(TestItem.ItemSlot);
+            }
+
+            else
+            {
+                Debug.Log(TestItem.ItemSlot);
+                Debug.Log("Item Slot unit test passed");
+            }
+
+            if (TestItem.ItemType != Item.Type.Cursed)
+            {
+                Debug.LogError("Item Type  unit test failed!" +
+                    "Item Type is not propperly implemented!");
+                Debug.Log(TestItem.ItemType);
+            }
+
+            else
+            {
+                Debug.Log(TestItem.ItemType);
+                Debug.Log("Item Type unit test passed");
+            }
+
+
+        }
+    }
+
 }
+
+
