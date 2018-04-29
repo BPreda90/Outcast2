@@ -3,75 +3,77 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class JsonData : MonoBehaviour
-{
-    string filename = "saveData.json";
-    public static string path;
+namespace Assets.OutcastScripts {
 
-    string error = "Unable to retrieve file! The save file might be corrupted or missing!";
-
-    public GameData gameData = new GameData();
-
-    // Use this for initialization
-    void Start()
+    public class JsonData : MonoBehaviour
     {
-        path = Path.Combine(Application.persistentDataPath, filename);
-        Debug.Log(path);
-    }
+        string filename = "saveData.json";
+        public static string path;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
+        string error = "Unable to retrieve file! The save file might be corrupted or missing!";
+
+        public GameData gameData = new GameData();
+
+        // Use this for initialization
+        void Start()
         {
-            SaveData();
+            path = Path.Combine(Application.persistentDataPath, filename);
+            Debug.Log(path);
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            ReadData();
-        }
-    }
-    public void SaveData()
-    {
 
-        JsonWrapper wrapper = new JsonWrapper();
-        wrapper.gameData = gameData;
-        
-
-        string contents = JsonUtility.ToJson(wrapper, true);
-        File.WriteAllText(path, contents);
-    }
-    public void ReadData()
-    {
-        try
+        // Update is called once per frame
+        void Update()
         {
-            if (File.Exists(path))
+            if (Input.GetKeyDown(KeyCode.S))
             {
-                string contents = File.ReadAllText(path);
-                JsonWrapper wrapper = JsonUtility.FromJson<JsonWrapper>(contents);
-                gameData = wrapper.gameData;
-                
-
-                foreach (Quests q in gameData.quest)
-                {
-                    Debug.Log(q.desc);
-                }
-                foreach (Hunter h in gameData.hunters)
-                {
-                    Debug.Log(h.Name);
-                }
+                SaveData();
             }
-            else
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                Debug.LogError(error);
+                ReadData();
             }
         }
-        catch (System.Exception ex)
+        public void SaveData()
         {
-            Debug.Log(ex.Message);
+
+            JsonWrapper wrapper = new JsonWrapper();
+            wrapper.gameData = gameData;
+
+
+            string contents = JsonUtility.ToJson(wrapper, true);
+            File.WriteAllText(path, contents);
         }
+        public void ReadData()
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    string contents = File.ReadAllText(path);
+                    JsonWrapper wrapper = JsonUtility.FromJson<JsonWrapper>(contents);
+                    gameData = wrapper.gameData;
+
+
+                    foreach (Quests q in gameData.quest)
+                    {
+                        Debug.Log(q.desc);
+                    }
+                    foreach (Hunter h in gameData.hunters)
+                    {
+                        Debug.Log(h.Name);
+                    }
+                }
+                else
+                {
+                    Debug.LogError(error);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.Log(ex.Message);
+            }
+        }
+
+
     }
-
-
-
 }

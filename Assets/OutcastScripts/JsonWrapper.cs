@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-[Serializable]
-public class JsonWrapper
+namespace Assets.OutcastScripts
+{
+    [Serializable]
+    public class JsonWrapper
     {
-    public GameData gameData;
+        public GameData gameData;
     }
+}
 

@@ -139,7 +139,7 @@ namespace Assets.OutcastScripts
         {
 
             unitItems.Add(i);
-            Debug.Log("Applying the modi fiers for the " + i.Name + " item to hunter" + h.Name + "\n");
+            Debug.Log("Applying the modifiers for the " + i.Name + " item to hunter" + h.Name + "\n");
             Debug.Log("Current Stats: " + "\n" +
                 "Agility = " + h.Agility + "\n" +
                 "ArkaneKnowledge = " + h.ArkaneNnowledge + "\n" +
