@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public abstract class Unit
+public abstract class LegacyUnit
 {
    protected string negativeStatError = "A character with a negative stat is impossible.";
     // Primary Stats
@@ -176,12 +176,12 @@ public abstract class Unit
     protected int _modifierAgility;
 
 
-    public Unit(string name, int strength, int inteligence, int agility)
+    public LegacyUnit(string name, int strength, int inteligence, int agility)
     {
 
     }
 
-    public Unit()
+    public LegacyUnit()
     {
 
     }

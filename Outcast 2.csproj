@@ -244,14 +244,42 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Bestiary.cs" />
-    <Compile Include="Assets\Catlike\FloatRange.cs" />
-    <Compile Include="Assets\Catlike\FPSCounter.cs" />
-    <Compile Include="Assets\Catlike\FPSDisplay.cs" />
-    <Compile Include="Assets\Catlike\Old\NucleonSpawner.cs" />
-    <Compile Include="Assets\Catlike\Old\Nucleu.cs" />
-    <Compile Include="Assets\Catlike\Stuff.cs" />
-    <Compile Include="Assets\Catlike\StuffSpawner.cs" />
-    <Compile Include="Assets\Catlike\StuffSpawnerRing.cs" />
+    <Compile Include="Assets\Hex\CityNameplate.cs" />
+    <Compile Include="Assets\Hex\CityNameplateController.cs" />
+    <Compile Include="Assets\Hex\FaceCamera.cs" />
+    <Compile Include="Assets\Hex\MapObjectNamePlate.cs" />
+    <Compile Include="Assets\Hex\QPath\IQPathTile.cs" />
+    <Compile Include="Assets\Hex\QPath\IQPathUnit.cs" />
+    <Compile Include="Assets\Hex\QPath\IQPathWorld.cs" />
+    <Compile Include="Assets\Hex\QPath\PathfindingPriorityQueue.cs" />
+    <Compile Include="Assets\Hex\QPath\Priority Queue\FastPriorityQueue.cs" />
+    <Compile Include="Assets\Hex\QPath\Priority Queue\FastPriorityQueueNode.cs" />
+    <Compile Include="Assets\Hex\QPath\Priority Queue\GenericPriorityQueue.cs" />
+    <Compile Include="Assets\Hex\QPath\Priority Queue\GenericPriorityQueueNode.cs" />
+    <Compile Include="Assets\Hex\QPath\Priority Queue\IFixedSizePriorityQueue.cs" />
+    <Compile Include="Assets\Hex\QPath\Priority Queue\IPriorityQueue.cs" />
+    <Compile Include="Assets\Hex\QPath\Priority Queue\Properties\AssemblyInfo.cs" />
+    <Compile Include="Assets\Hex\QPath\Priority Queue\SimplePriorityQueue.cs" />
+    <Compile Include="Assets\Hex\QPath\Priority Queue\StablePriorityQueue.cs" />
+    <Compile Include="Assets\Hex\QPath\Priority Queue\StablePriorityQueueNode.cs" />
+    <Compile Include="Assets\Hex\QPath\QPath.cs" />
+    <Compile Include="Assets\Hex\QPath\QPath_AStar.cs" />
+    <Compile Include="Assets\Hex\QPath\QPath_TileGraph.cs" />
+    <Compile Include="Assets\Hex\Scripts\BuildingJob.cs" />
+    <Compile Include="Assets\Hex\Scripts\CameraKeyboardController.cs" />
+    <Compile Include="Assets\Hex\Scripts\CameraMotion.cs" />
+    <Compile Include="Assets\Hex\Scripts\City.cs" />
+    <Compile Include="Assets\Hex\Scripts\Hex.cs" />
+    <Compile Include="Assets\Hex\Scripts\HexComponent.cs" />
+    <Compile Include="Assets\Hex\Scripts\HexMap.cs" />
+    <Compile Include="Assets\Hex\Scripts\HexMap_Continent.cs" />
+    <Compile Include="Assets\Hex\Scripts\MapObject.cs" />
+    <Compile Include="Assets\Hex\Scripts\MouseController.cs" />
+    <Compile Include="Assets\Hex\Scripts\TurnController.cs" />
+    <Compile Include="Assets\Hex\Scripts\UI\BuildCityButton.cs" />
+    <Compile Include="Assets\Hex\Scripts\UI\UnitSelectionPanel.cs" />
+    <Compile Include="Assets\Hex\Scripts\Unit.cs" />
+    <Compile Include="Assets\Hex\Scripts\UnitView.cs" />
     <Compile Include="Assets\LoadBestiary.cs" />
     <Compile Include="Assets\OutcastScripts\Contract.cs" />
     <Compile Include="Assets\OutcastScripts\GameData.cs" />
@@ -269,6 +297,9 @@
     <Compile Include="Assets\OutcastScripts\UnitModifier.cs" />
     <Compile Include="Assets\OutcastScripts\UnitToGameObject.cs" />
     <Compile Include="Assets\Quests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Hex\Models\OpenGameArt\SOURCE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
