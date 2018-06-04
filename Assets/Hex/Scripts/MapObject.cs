@@ -31,7 +31,6 @@ public class MapObject
             OnObjectMoved(oldHex, newHex);
         }
     }
-
 }
 
 

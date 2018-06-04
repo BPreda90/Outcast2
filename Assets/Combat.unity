@@ -522,7 +522,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1226477449}
-  - component: {fileID: 1226477448}
   m_Layer: 0
   m_Name: Main
   m_TagString: Untagged
@@ -530,61 +529,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1226477448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1226477447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 384ab86881b849e4dbcb5a96be0f6b76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  temp: 0
-  text: {fileID: 1602014913}
-  hp: {fileID: 0}
-  jData: {fileID: 472644228}
-  inputField: {fileID: 83757938}
-  myPlayer:
-    _name: 
-    _fortune: 0
-    _income: 0
-    _expenses: 0
-  myHunter:
-    _name: 
-    _hasTakenTurn: 0
-    _isAlive: 0
-    _strength: 0
-    _modifierStrength: 0
-    _inteligence: 0
-    _modifierInteligence: 0
-    _agility: 0
-    _modifierAgility: 0
-    _age: 0
-    _currentHealth: 0
-    _modifierCurrentHealth: 0
-    _maxHealth: 0
-    _modifierMaxHealth: 0
-    _sanity: 0
-    _modifierSanity: 0
-    _tracking: 0
-    _modifierTracking: 0
-    _arkaneKnowledge: 0
-    _modifierArkaneKnowledge: 0
-    _level: 0
-    _experience: 0
-    _modifierExperience: 0
-    _monthlyPay: 0
-    _fortune: 0
-    _rangedDamage: 0
-    _modifierRangedDamage: 0
-    _meleeDamage: 0
-    _modifierMeleeDamage: 0
-    _reactivity: 0
-    _modifierReactivity: 0
-    _damageReduction: 0
-    _modifierDamageReduction: 0
 --- !u!4 &1226477449
 Transform:
   m_ObjectHideFlags: 0

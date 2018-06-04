@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class Hunter : Unit
+public class Hunter : Creature
 {
 
     /// <summary>

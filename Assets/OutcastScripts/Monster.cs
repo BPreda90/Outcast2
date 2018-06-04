@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 
 [System.Serializable]
-public class Monster: Unit
+public class Monster: Creature
 {
 
     /// <summary>

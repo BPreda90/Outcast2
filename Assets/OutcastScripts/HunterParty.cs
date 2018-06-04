@@ -6,10 +6,7 @@ using System.Collections.Generic;
 public class HunterParty : MonoBehaviour
 {
     public List<Hunter> HuntParty = new List<Hunter>();
-    public Contract activeContract = null;
-    public Unit activeUnit;
     public Hunter activeHunter;
-    public Monster activeMonster;
 
     public float PartyStrength;
     public float PartyTracking;
@@ -49,17 +46,4 @@ public class HunterParty : MonoBehaviour
         PartyLevel = 0;
         PartyReactivity = 0;
     }  
-
-    
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
