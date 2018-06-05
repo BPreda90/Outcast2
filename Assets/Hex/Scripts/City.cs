@@ -5,6 +5,7 @@ using System.Linq;
 
 public class City : MapObject
 {
+
     public City()
     {
         Name = "Brussels";
@@ -15,6 +16,8 @@ public class City : MapObject
     BuildingJob buildingJob;
 
     float productionPerTurn = 9001;
+
+
 
     override public void SetHex( Hex newHex )
     {
@@ -61,6 +64,7 @@ public class City : MapObject
             null
         );
     }
+
 
 }
 
