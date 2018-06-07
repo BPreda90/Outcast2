@@ -26,13 +26,16 @@ public class JsonData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+       
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             SaveData();
+            print("Saved Data");
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             ReadData();
+            print("Read Data");
         }
     }
     public void SaveData()

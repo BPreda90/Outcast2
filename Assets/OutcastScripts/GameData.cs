@@ -25,4 +25,6 @@ public class GameData : MonoBehaviour
     public Time savedTime = new Time(1, 1, 1);
 
     public List<HunterParty> huntingParties = new List<HunterParty>();
+
+    public Dictionary<string, HexMap_Continent> HexMapDictionary = new Dictionary<string, HexMap_Continent>();
 }

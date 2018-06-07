@@ -8,6 +8,7 @@ public class HexMap : MonoBehaviour, IQPathWorld {
 
 	// Use this for initialization
 	void Start () {
+        FindObjectOfType<GameData>()
         GenerateMap();
 	}
 
