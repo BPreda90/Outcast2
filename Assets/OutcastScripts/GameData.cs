@@ -4,8 +4,25 @@ using UnityEngine;
 using System;
 
 [System.Serializable]
-public class GameData : MonoBehaviour
+public class GameData: MonoBehaviour
 {
+    public static GameData Instance { get; private set; }
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+    
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    //Outcast Saving Logic
 
     public string date = "";
     public string time = "";
@@ -26,5 +43,10 @@ public class GameData : MonoBehaviour
 
     public List<HunterParty> huntingParties = new List<HunterParty>();
 
+    // Hex Saving Logic
+
     public Dictionary<string, HexMap_Continent> HexMapDictionary = new Dictionary<string, HexMap_Continent>();
+
+    public List<Unit> UnitsOnMap = new List<Unit>();
+    
 }

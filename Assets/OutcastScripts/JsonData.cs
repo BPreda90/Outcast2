@@ -16,6 +16,9 @@ public class JsonData : MonoBehaviour
     {
         path = Path.Combine(Application.persistentDataPath, filename);
         Debug.Log(path);
+        FindObjectOfType<HexMap_Continent>().onMapCreatedEvent += SaveANewMap;
+        print("JsonData Start got called");
+
     }
 
     private void Awake()
@@ -26,6 +29,7 @@ public class JsonData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
        
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -78,6 +82,10 @@ public class JsonData : MonoBehaviour
             Debug.Log(ex.Message);
         }
     }
-
+    public void SaveANewMap()
+    {
+        print("New map generated");
+    }
+    
 
 }

@@ -5,6 +5,7 @@ using QPath;
 using System.Linq;
 using System;
 
+[System.Serializable]
 public class Unit: MapObject, IQPathUnit
 {
     public int Strenth = 8;

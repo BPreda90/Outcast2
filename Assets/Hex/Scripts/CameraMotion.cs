@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class CameraMotion : MonoBehaviour {
 
+    HexMap_Continent myHexMap;
 	// Use this for initialization
 	void Start () {
         oldPosition = this.transform.position;
-	}
+        myHexMap = GameObject.FindObjectOfType<HexMap_Continent>();
+    }
 
     Vector3 oldPosition;
 	
@@ -20,7 +22,7 @@ public class CameraMotion : MonoBehaviour {
 
 
 
-        CheckIfCameraMoved();
+        //CheckIfCameraMoved();
 	}
 
     public void PanToHex( Hex hex )
@@ -30,7 +32,7 @@ public class CameraMotion : MonoBehaviour {
 
     HexComponent[] hexes;
 
-    void CheckIfCameraMoved()
+    public void CheckIfCameraMoved()
     {
         if(oldPosition != this.transform.position)
         {

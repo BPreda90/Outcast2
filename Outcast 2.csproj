@@ -266,6 +266,7 @@
     <Compile Include="Assets\Hex\QPath\QPath_AStar.cs" />
     <Compile Include="Assets\Hex\QPath\QPath_TileGraph.cs" />
     <Compile Include="Assets\Hex\Scripts\BuildingJob.cs" />
+    <Compile Include="Assets\Hex\Scripts\CameraBounds.cs" />
     <Compile Include="Assets\Hex\Scripts\CameraKeyboardController.cs" />
     <Compile Include="Assets\Hex\Scripts\CameraMotion.cs" />
     <Compile Include="Assets\Hex\Scripts\City.cs" />
@@ -275,6 +276,7 @@
     <Compile Include="Assets\Hex\Scripts\HexMap_Continent.cs" />
     <Compile Include="Assets\Hex\Scripts\MapObject.cs" />
     <Compile Include="Assets\Hex\Scripts\MouseController.cs" />
+    <Compile Include="Assets\Hex\Scripts\PlayerUI.cs" />
     <Compile Include="Assets\Hex\Scripts\TurnController.cs" />
     <Compile Include="Assets\Hex\Scripts\UI\BuildCityButton.cs" />
     <Compile Include="Assets\Hex\Scripts\UI\UnitSelectionPanel.cs" />
@@ -295,8 +297,8 @@
     <Compile Include="Assets\OutcastScripts\Player.cs" />
     <Compile Include="Assets\OutcastScripts\PointOfInterest.cs" />
     <Compile Include="Assets\OutcastScripts\Time.cs" />
-    <Compile Include="Assets\PlayerUI.cs" />
     <Compile Include="Assets\Quests.cs" />
+    <Compile Include="Assets\SceneLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Hex\Models\OpenGameArt\SOURCE.txt" />

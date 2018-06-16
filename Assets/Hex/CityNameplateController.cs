@@ -7,7 +7,7 @@ public class CityNameplateController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         GameObject.FindObjectOfType<HexMap>().OnCityCreated += CreateCityNameplate;
-	}
+    }
 
 	// Update is called once per frame
 	void Update () {

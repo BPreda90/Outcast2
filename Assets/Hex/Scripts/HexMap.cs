@@ -3,51 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using QPath;
 using System.Linq;
+using System;
 
-public class HexMap : MonoBehaviour, IQPathWorld {
 
-	// Use this for initialization
-	void Start () {
-        FindObjectOfType<GameData>()
-        GenerateMap();
-	}
+[System.Serializable]
+public class HexMap : MonoBehaviour, IQPathWorld
+{
+    // Use this for initialization
 
+    public string MapName;
     public bool AnimationIsPlaying = false;
 
-    public delegate void CityCreatedDelegate ( City city, GameObject cityGO );
+    public delegate void CityCreatedDelegate(City city, GameObject cityGO);
     public event CityCreatedDelegate OnCityCreated;
 
     void Update()
     {
         // TESTING: Hit spacebar to advance to next turn
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine( DoAllUnitMoves() );
+            StartCoroutine(DoAllUnitMoves());
         }
     }
 
     IEnumerator DoAllUnitMoves()
     {
-        if(units != null)
+        if (units != null)
         {
-            foreach(Unit u in units)
+            foreach (Unit u in units)
             {
-                yield return DoUnitMoves( u );
+                yield return DoUnitMoves(u);
             }
         }
     }
 
-    public IEnumerator DoUnitMoves( Unit u )
+    public IEnumerator DoUnitMoves(Unit u)
     {
         // Is there any reason we should check HERE if a unit should be moving?
         // I think the answer is no -- DoMove should just check to see if it needs
         // to do anything, or just return immediately.
-        while( u.DoMove() )
+        while (u.DoMove())
         {
             Debug.Log("DoMove returned true -- will be called again.");
             // TODO: Check to see if an animation is playing, if so
             // wait for it to finish. 
-            while(AnimationIsPlaying) {
+            while (AnimationIsPlaying)
+            {
                 yield return null; // Wait one frame
             }
 
@@ -112,30 +113,31 @@ public class HexMap : MonoBehaviour, IQPathWorld {
 
     public Hex GetHexAt(int x, int y)
     {
-        if(hexes == null)
+        if (hexes == null)
         {
             Debug.LogError("Hexes array not yet instantiated.");
             return null;
         }
 
-        if(AllowWrapEastWest)
+        if (AllowWrapEastWest)
         {
             x = x % NumColumns;
-            if(x < 0)
+            if (x < 0)
             {
                 x += NumColumns;
             }
         }
-        if(AllowWrapNorthSouth)
+        if (AllowWrapNorthSouth)
         {
             y = y % NumRows;
-            if(y < 0)
+            if (y < 0)
             {
                 y += NumRows;
             }
         }
 
-        try {
+        try
+        {
             return hexes[x, y];
         }
         catch
@@ -147,7 +149,7 @@ public class HexMap : MonoBehaviour, IQPathWorld {
 
     public Hex GetHexFromGameObject(GameObject hexGO)
     {
-        if( gameObjectToHexMap.ContainsKey(hexGO) )
+        if (gameObjectToHexMap.ContainsKey(hexGO))
         {
             return gameObjectToHexMap[hexGO];
         }
@@ -157,7 +159,7 @@ public class HexMap : MonoBehaviour, IQPathWorld {
 
     public GameObject GetHexGO(Hex h)
     {
-        if( hexToGameObjectMap.ContainsKey(h) )
+        if (hexToGameObjectMap.ContainsKey(h))
         {
             return hexToGameObjectMap[h];
         }
@@ -174,12 +176,23 @@ public class HexMap : MonoBehaviour, IQPathWorld {
 
     public Vector3 GetHexPosition(Hex hex)
     {
-        return hex.PositionFromCamera( Camera.main.transform.position, NumRows, NumColumns );
+        return hex.PositionFromCamera(Camera.main.transform.position, NumRows, NumColumns);
     }
 
+    private string GenerateMapName()
+    {
+        char[] letters = "qwertyuiopasdfghjklzxcvbnm".ToCharArray();
+        string mapName = "";
+        for (int i = 0; i < 12; i++)
+        {
+            mapName += letters[UnityEngine.Random.Range(0, 25)];
+        }
+        return mapName;
+    }
 
     virtual public void GenerateMap()
     {
+        MapName = GenerateMapName();
         // Generate a map filled with ocean
 
         hexes = new Hex[NumColumns, NumRows];
@@ -191,20 +204,20 @@ public class HexMap : MonoBehaviour, IQPathWorld {
             for (int row = 0; row < NumRows; row++)
             {
                 // Instantiate a Hex
-                Hex h = new Hex( this, column, row );
+                Hex h = new Hex(this, column, row);
                 h.Elevation = -0.5f;
 
-                hexes[ column, row ] = h;
+                hexes[column, row] = h;
 
-                Vector3 pos = h.PositionFromCamera( 
-                    Camera.main.transform.position, 
-                    NumRows, 
-                    NumColumns 
+                Vector3 pos = h.PositionFromCamera(
+                    Camera.main.transform.position,
+                    NumRows,
+                    NumColumns
                 );
 
 
                 GameObject hexGO = (GameObject)Instantiate(
-                    HexPrefab, 
+                    HexPrefab,
                     pos,
                     Quaternion.identity,
                     this.transform
@@ -235,7 +248,7 @@ public class HexMap : MonoBehaviour, IQPathWorld {
         {
             for (int row = 0; row < NumRows; row++)
             {
-                Hex h = hexes[column,row];
+                Hex h = hexes[column, row];
                 GameObject hexGO = hexToGameObjectMap[h];
 
                 HexComponent hexComp = hexGO.GetComponentInChildren<HexComponent>();
@@ -243,9 +256,9 @@ public class HexMap : MonoBehaviour, IQPathWorld {
                 MeshFilter mf = hexGO.GetComponentInChildren<MeshFilter>();
 
 
-                if(h.Elevation >= HeightFlat && h.Elevation < HeightMountain)
+                if (h.Elevation >= HeightFlat && h.Elevation < HeightMountain)
                 {
-                    if(h.Moisture >= MoistureJungle)
+                    if (h.Moisture >= MoistureJungle)
                     {
                         mr.material = MatGrasslands;
                         h.TerrainType = Hex.TERRAIN_TYPE.GRASSLANDS;
@@ -253,7 +266,7 @@ public class HexMap : MonoBehaviour, IQPathWorld {
 
                         // Spawn trees
                         Vector3 p = hexGO.transform.position;
-                        if(h.Elevation >= HeightHill)
+                        if (h.Elevation >= HeightHill)
                         {
                             p.y += 0.25f;
                         }
@@ -261,7 +274,7 @@ public class HexMap : MonoBehaviour, IQPathWorld {
 
                         GameObject.Instantiate(JunglePrefab, p, Quaternion.identity, hexGO.transform);
                     }
-                    else if(h.Moisture >= MoistureForest)
+                    else if (h.Moisture >= MoistureForest)
                     {
                         mr.material = MatGrasslands;
                         h.TerrainType = Hex.TERRAIN_TYPE.GRASSLANDS;
@@ -269,42 +282,42 @@ public class HexMap : MonoBehaviour, IQPathWorld {
 
                         // Spawn trees
                         Vector3 p = hexGO.transform.position;
-                        if(h.Elevation >= HeightHill)
+                        if (h.Elevation >= HeightHill)
                         {
                             p.y += 0.25f;
                         }
                         GameObject.Instantiate(ForestPrefab, p, Quaternion.identity, hexGO.transform);
                     }
-                    else if(h.Moisture >= MoistureGrasslands)
+                    else if (h.Moisture >= MoistureGrasslands)
                     {
                         mr.material = MatGrasslands;
                         h.TerrainType = Hex.TERRAIN_TYPE.GRASSLANDS;
                     }
-                    else if(h.Moisture >= MoisturePlains)
+                    else if (h.Moisture >= MoisturePlains)
                     {
                         mr.material = MatPlains;
                         h.TerrainType = Hex.TERRAIN_TYPE.PLAINS;
                     }
-                    else 
+                    else
                     {
                         mr.material = MatDesert;
                         h.TerrainType = Hex.TERRAIN_TYPE.DESERT;
                     }
                 }
 
-                if(h.Elevation >= HeightMountain)
+                if (h.Elevation >= HeightMountain)
                 {
                     mr.material = MatMountains;
                     mf.mesh = MeshMountain;
                     h.ElevationType = Hex.ELEVATION_TYPE.MOUNTAIN;
                 }
-                else if(h.Elevation >= HeightHill)
+                else if (h.Elevation >= HeightHill)
                 {
                     h.ElevationType = Hex.ELEVATION_TYPE.HILL;
                     mf.mesh = MeshHill;
                     hexComp.VerticalOffset = 0.25f;
                 }
-                else if(h.Elevation >= HeightFlat)
+                else if (h.Elevation >= HeightFlat)
                 {
                     h.ElevationType = Hex.ELEVATION_TYPE.FLAT;
                     mf.mesh = MeshFlat;
@@ -316,9 +329,9 @@ public class HexMap : MonoBehaviour, IQPathWorld {
                     mf.mesh = MeshWater;
                 }
 
-                hexGO.GetComponentInChildren<TextMesh>().text = 
-                    string.Format("{0},{1}\n{2}", column, row, h.BaseMovementCost( false, false, false ));
-                
+                hexGO.GetComponentInChildren<TextMesh>().text =
+                    string.Format("{0},{1}\n{2}", column, row, h.BaseMovementCost(false, false, false));
+
             }
         }
     }
@@ -327,20 +340,20 @@ public class HexMap : MonoBehaviour, IQPathWorld {
     {
         List<Hex> results = new List<Hex>();
 
-        for (int dx = -range; dx < range-1; dx++)
+        for (int dx = -range; dx < range - 1; dx++)
         {
-            for (int dy = Mathf.Max(-range+1, -dx-range); dy < Mathf.Min(range, -dx+range-1); dy++)
+            for (int dy = Mathf.Max(-range + 1, -dx - range); dy < Mathf.Min(range, -dx + range - 1); dy++)
             {
-                results.Add( GetHexAt(centerHex.Q + dx, centerHex.R + dy) );
+                results.Add(GetHexAt(centerHex.Q + dx, centerHex.R + dy));
             }
         }
 
         return results.ToArray();
     }
 
-    public void SpawnUnitAt( Unit unit, GameObject prefab, int q, int r )
+    public void SpawnUnitAt(Unit unit, GameObject prefab, int q, int r)
     {
-        if(units == null)
+        if (units == null)
         {
             units = new HashSet<Unit>();
             unitToGameObjectMap = new Dictionary<Unit, GameObject>();
@@ -357,10 +370,10 @@ public class HexMap : MonoBehaviour, IQPathWorld {
         unitToGameObjectMap.Add(unit, unitGO);
     }
 
-    public void SpawnCityAt( City city, GameObject prefab, int q, int r )
+    public void SpawnCityAt(City city, GameObject prefab, int q, int r)
     {
         Debug.Log("SpawnCityAt");
-        if(cities == null)
+        if (cities == null)
         {
             cities = new HashSet<City>();
             cityToGameObjectMap = new Dictionary<City, GameObject>();
@@ -373,7 +386,7 @@ public class HexMap : MonoBehaviour, IQPathWorld {
         {
             city.SetHex(myHex);
         }
-        catch(UnityException e)
+        catch (UnityException e)
         {
             Debug.LogError(e.Message);
             return;
@@ -384,9 +397,11 @@ public class HexMap : MonoBehaviour, IQPathWorld {
         cities.Add(city);
         cityToGameObjectMap.Add(city, cityGO);
 
-        if(OnCityCreated != null)
+        if (OnCityCreated != null)
         {
             OnCityCreated(city, cityGO);
         }
     }
+
+
 }

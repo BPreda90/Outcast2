@@ -6,9 +6,13 @@ using UnityEngine.EventSystems;
 public class MouseController : MonoBehaviour
 {
 
+    Camera myCamera;
+
     // Use this for initialization
     void Start ()
     {
+        myCamera = Camera.main;
+
         Update_CurrentFunc = Update_DetectModeStart;
 
         hexMap = GameObject.FindObjectOfType<HexMap>();
@@ -192,7 +196,7 @@ public class MouseController : MonoBehaviour
 
     Hex MouseToHex()
     {
-        Ray mouseRay = Camera.main.ScreenPointToRay (Input.mousePosition);
+        Ray mouseRay = myCamera.ScreenPointToRay (Input.mousePosition);
         RaycastHit hitInfo;
 
         int layerMask = LayerIDForHexTiles.value;
@@ -214,7 +218,7 @@ public class MouseController : MonoBehaviour
 
     Vector3 MouseToGroundPlane(Vector3 mousePos)
     {
-        Ray mouseRay = Camera.main.ScreenPointToRay (mousePos);
+        Ray mouseRay = myCamera.ScreenPointToRay (mousePos);
         // What is the point at which the mouse ray intersects Y=0
         if (mouseRay.direction.y >= 0) {
             //Debug.LogError("Why is mouse pointing up?");
@@ -270,7 +274,7 @@ public class MouseController : MonoBehaviour
         Vector3 hitPos = MouseToGroundPlane(Input.mousePosition);
 
         Vector3 diff = lastMouseGroundPlanePosition - hitPos;
-        Camera.main.transform.Translate (diff, Space.World);
+        myCamera.transform.Translate (diff, Space.World);
 
         lastMouseGroundPlanePosition = hitPos = MouseToGroundPlane(Input.mousePosition);
 
@@ -286,34 +290,34 @@ public class MouseController : MonoBehaviour
         float maxHeight = 20;
         // Move camera towards hitPos
         Vector3 hitPos = MouseToGroundPlane(Input.mousePosition);
-        Vector3 dir = hitPos - Camera.main.transform.position;
+        Vector3 dir = hitPos - myCamera.transform.position;
 
-        Vector3 p = Camera.main.transform.position;
+        Vector3 p = myCamera.transform.position;
 
         // Stop zooming out at a certain distance.
         // TODO: Maybe you should still slide around at 20 zoom?
         if (scrollAmount > 0 || p.y < (maxHeight - 0.1f)) {
             cameraTargetOffset += dir * scrollAmount;
         }
-        Vector3 lastCameraPosition = Camera.main.transform.position;
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, Camera.main.transform.position + cameraTargetOffset, UnityEngine.Time.deltaTime * 5f);
-        cameraTargetOffset -= Camera.main.transform.position - lastCameraPosition;
+        Vector3 lastCameraPosition = myCamera.transform.position;
+        myCamera.transform.position = Vector3.Lerp(myCamera.transform.position, myCamera.transform.position + cameraTargetOffset, UnityEngine.Time.deltaTime * 5f);
+        cameraTargetOffset -= myCamera.transform.position - lastCameraPosition;
 
 
-        p = Camera.main.transform.position;
+        p = myCamera.transform.position;
         if (p.y < minHeight) {
             p.y = minHeight;
         }
         if (p.y > maxHeight) {
             p.y = maxHeight;
         }
-        Camera.main.transform.position = p;
+        myCamera.transform.position = p;
 
         // Change camera angle
-        Camera.main.transform.rotation = Quaternion.Euler (
-            Mathf.Lerp (30, 75, Camera.main.transform.position.y / maxHeight),
-            Camera.main.transform.rotation.eulerAngles.y,
-            Camera.main.transform.rotation.eulerAngles.z
+        myCamera.transform.rotation = Quaternion.Euler (
+            Mathf.Lerp (30, 75, myCamera.transform.position.y / maxHeight),
+            myCamera.transform.rotation.eulerAngles.y,
+            myCamera.transform.rotation.eulerAngles.z
         );
 
 

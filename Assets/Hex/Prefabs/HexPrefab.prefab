@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 54355045328645772}
   m_Layer: 8
   m_Name: HexPrefab
-  m_TagString: Untagged
+  m_TagString: Hexes
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -259,3 +259,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HexMap: {fileID: 0}
+  VerticalOffset: 0
